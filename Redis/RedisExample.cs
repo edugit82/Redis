@@ -20,7 +20,7 @@ namespace Redis
         {
             ConfigurationOptions configurationOptions = new ConfigurationOptions
             {
-                EndPoints = { "20.119.73.246:6379" },
+                EndPoints = { "68.211.177.39:6379" },
                 User = "eduardocorrea82_redis", // if applicable
                 Password = "bO7#sL1@", // if applicable                
                 AbortOnConnectFail = false
@@ -30,14 +30,14 @@ namespace Redis
             this.redis = ConnectionMultiplexer.Connect(configurationOptions);
             this.db = redis.GetDatabase();
         }
-        public void KeyValueExample()
+        public void KeyValueExample(ref string? value)
         {            
             // Set a key-value pair
             db.StringSet("mykey", "Hello, Redis!");
             // Retrieve a value by key
-            string? value = db.StringGet("mykey");
+            value = db.StringGet("mykey");            
         }
-        public void HashesExample()
+        public void HashesExample(ref string? fieldValue)
         {            
             // Create a Redis Hash
             HashEntry[] hashEntries = new HashEntry[]
@@ -47,15 +47,15 @@ namespace Redis
             };
             db.HashSet("myhash", hashEntries);
             // Retrieve a specific field from the Hash
-            string? fieldValue = db.HashGet("myhash", "field1");
+            fieldValue = db.HashGet("myhash", "field1");
         }
-        public void ListsExample() 
+        public void ListsExample(ref RedisValue[] listItems) 
         {
             // Add items to a Redis List
             db.ListLeftPush("mylist", "item1");
             db.ListLeftPush("mylist", "item2");
             // Retrieve all items from the List
-            RedisValue[] listItems = db.ListRange("mylist");
+            listItems = db.ListRange("mylist");
         }
     }
 }
