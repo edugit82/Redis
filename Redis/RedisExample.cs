@@ -34,10 +34,11 @@ namespace Redis
         {            
             // Set a key-value pair
             db.StringSet("mykey", "Hello, Redis!");
-            // Retrieve a value by key
-            value = db.StringGet("mykey");            
+            // Retrieve a value by key            
+            value += db.StringGet("mykey");
+            db.KeyDelete("mykey");
         }
-        public void HashesExample(ref string? fieldValue)
+        public void HashesExample(ref List<string?> fieldValue)
         {            
             // Create a Redis Hash
             HashEntry[] hashEntries = new HashEntry[]
@@ -46,16 +47,25 @@ namespace Redis
                 new HashEntry("field2", "value2")
             };
             db.HashSet("myhash", hashEntries);
+            
             // Retrieve a specific field from the Hash
-            fieldValue = db.HashGet("myhash", "field1");
+            fieldValue.Add(db.HashGet("myhash", "field1"));
+            fieldValue.Add(db.HashGet("myhash", "field2"));
+
+            db.HashDelete("myhash", "field1");
+            db.HashDelete("myhash", "field2");
         }
         public void ListsExample(ref RedisValue[] listItems) 
         {
             // Add items to a Redis List
             db.ListLeftPush("mylist", "item1");
             db.ListLeftPush("mylist", "item2");
+            
             // Retrieve all items from the List
             listItems = db.ListRange("mylist");
+            
+            db.ListRemove("mylist", "item1");
+            db.ListRemove("mylist", "item2");
         }
     }
 }

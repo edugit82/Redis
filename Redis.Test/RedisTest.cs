@@ -15,10 +15,13 @@ namespace Redis.Test
         }        
         private void Test02()
         {
-
-            string? fieldValue = "";
+            List<string?> fieldValue = new List<string?>();
             _redisExample.HashesExample(ref fieldValue);
-            Debug.WriteLine($"Hash Field Value: {fieldValue}");
+            
+            fieldValue.ForEach(a => { 
+                if (a != null)
+                    Debug.WriteLine($"Hash Field Value: {a}");
+            });            
         }        
         private void Test03()
         {
@@ -31,9 +34,16 @@ namespace Redis.Test
         [Fact]
         public void RunAll()
         {
+            Debug.WriteLine("");
+            
             Test01();
+            Debug.WriteLine("");
+            
             Test02();
+            Debug.WriteLine("");
+            
             Test03();
+            Debug.WriteLine("");
         }
     }
 }
